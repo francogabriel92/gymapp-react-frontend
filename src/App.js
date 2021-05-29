@@ -47,7 +47,7 @@ const App = () => {
             <Clients user={user}/>
           </Route>
           <Route path="/account">
-            <Account />
+            <Account loginHandler={setUser} />
           </Route>
           <Route path="/">
             <Home />

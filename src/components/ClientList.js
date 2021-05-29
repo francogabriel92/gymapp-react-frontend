@@ -1,17 +1,28 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import clientService from '../services/client';
 
-const ClientList = (user) => {
-  const [ clients, setClients ] = useState([]);
-
+const ClientList = ( {user, clientList, clientListHandler}) => {
+  useEffect(()=> {
+    const getClients = async () => {
+      try{
+        const response = await clientService.get(user.token);
+        clientListHandler(response);
+      }
+      catch {
+        return(<Link to='/' />)
+      }
+    };
+    getClients();
+  }, []);
 
   return (
     <div>
       <ul>
         {
-          (clients.length === 0) 
+          (clientList.length === 0) 
             ? <li>No clients yet!</li>
-            : clients.map( client => {
+            : clientList.map( client => {
               return <li key={client.id}>{client.name} - Age: {client.age}</li>
             })    
         }

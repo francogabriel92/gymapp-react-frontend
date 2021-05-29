@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import clientService from '../services/client';
 
-const ClientForm = (props) => {
+const ClientForm = ({ user, clientList, clientListHandler, formHandler}) => {
   const [ name, setName ] = useState('');
   const [ mail, setMail ] = useState('');
   const [ age, setAge ] = useState(0);
   const submitHandler = async e => {
-    const token = props.user.token;
+    const token = user.token;
     e.preventDefault();
     const newClient = {
       name,
       mail,
       age
     };
-    await clientService.create(newClient, token);
+    const response = await clientService.create(newClient, token);
+    clientListHandler([...clientList, response.data]);
   };
 
   return (
@@ -49,6 +50,9 @@ const ClientForm = (props) => {
         </div>
         <div>
           <input type='submit' value='Add client' />
+        </div>
+        <div>
+          <button onClick={() => formHandler(false)}>Close</button>
         </div>
       </form>
     </div>

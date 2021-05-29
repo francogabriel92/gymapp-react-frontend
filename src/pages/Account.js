@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Account = () => {
+const Account = (props) => {
 
   const handleLogout = () => {
-    console.log('Remove');
     window.localStorage.removeItem('loggedGymAppUser');
+    props.loginHandler(null)
   }; 
 
   return (
