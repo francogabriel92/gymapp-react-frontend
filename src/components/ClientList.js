@@ -1,34 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import clientService from '../services/client';
+import React from 'react';
+import { Spinner, ListGroup } from 'react-bootstrap';
+import ClientListItem from './ClientListItem';
 
-const ClientList = ( {user, clientList, clientListHandler}) => {
-  useEffect(()=> {
-    const getClients = async () => {
-      try{
-        const response = await clientService.get(user.token);
-        clientListHandler(response);
-      }
-      catch {
-        return(<Link to='/' />)
-      }
-    };
-    getClients();
-  }, []);
-
-  return (
-    <div>
-      <ul>
-        {
-          (clientList.length === 0) 
-            ? <li>No clients yet!</li>
-            : clientList.map( client => {
-              return <li key={client.id}>{client.name} - Age: {client.age}</li>
-            })    
-        }
-      </ul>
-    </div>
-  );
+const ClientList = ({ clients, isLoading }) => {
+  if(isLoading) {
+    return(
+      <div>
+        <Spinner animation="border" role="status">
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        <ListGroup variant='flush'>
+          {
+            clients
+              ? clients.map( client => <ClientListItem client={client} key={client.id} />)
+              : <span>No clients yet!</span>
+          }
+        </ListGroup>
+      </div>
+    );
+  }
 };
 
 export default ClientList;

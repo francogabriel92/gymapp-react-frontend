@@ -13,7 +13,7 @@ const get = async token => {
   const config = setHeader(token);
   try {
     const response = await axios.get(baseUrl, config);
-    return response.data;
+    return response;
   }
   catch {
     // PUT ERROR CODE
