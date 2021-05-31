@@ -31,7 +31,7 @@ const App = () => {
             <Login loginHandler={setUser} />
           </Route>
           <Route path="/clients">
-            <Clients user={user}/>
+            <Clients user={user} userHandler={setUser} />
           </Route>
           <Route path="/account">
             <Account loginHandler={setUser} />

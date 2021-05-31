@@ -3,12 +3,14 @@ import { Spinner, ListGroup } from 'react-bootstrap';
 import ClientListItem from './ClientListItem';
 
 const ClientList = ({ clients, isLoading }) => {
+
   if(isLoading) {
     return(
-      <div>
-        <Spinner animation="border" role="status">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
+      <div className='text-center'>
+        <h4>
+          Loading...
+        </h4>
+        <Spinner className='m-3' animation="border" role="status" />
       </div>
     )
   } else {

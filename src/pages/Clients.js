@@ -1,28 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Container,
-  Button } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import ClientList from '../components/ClientList';
-import ClientForm from '../components/ClientForm';
+import FormModal from '../components/FormModal';
 import Pagination from '../components/Pagination';
 import SearchFilter from '../components/SearchFilter';
 import clientService from '../services/client';
 
-const Client = ({ user }) => {
+const Client = ({ user, userHandler }) => {
   const [ isLoading, setIsLoading ] = useState(true);
-  const [ openForm, setOpenForm ] = useState(false);
-  const [ filter, setFilter ] = useState('')
+  const [ filter, setFilter ] = useState('');
   const [ clientList, setClientList ] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [ currentPage, setCurrentPage] = useState(1);
   const [ totalClients, setTotalClients ] = useState(0);
-  const clientsPerPage = 4;
-  const indexOfLastClient = currentPage * clientsPerPage;
-  const indexOfFirstClient = indexOfLastClient - clientsPerPage;
-  const paginate = pageNum => setCurrentPage(pageNum);
-  let currentClients;
-  let prevFilter = filter;
+  const CLIENTS_PER_PAGE = 4;
 
-  const filterChanged = (filter) => filter === prevFilter ? false : true;
+  const paginate = pageNum => setCurrentPage(pageNum);
 
   useEffect(()=> {
     const getClients = async () => {
@@ -33,6 +26,8 @@ const Client = ({ user }) => {
           setIsLoading(false);
           setClientList(response.data)
           setTotalClients(response.data.length);
+        } else if (response.status === 401) {
+          userHandler(null)
         };
       }
       catch {
@@ -43,41 +38,36 @@ const Client = ({ user }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  currentClients = clientList.slice(indexOfFirstClient, indexOfLastClient);
-
-  if(filter !== '' && filterChanged(filter)){
-    currentClients = clientList.filter(c => c.name.toLowerCase().includes(filter.toLowerCase()));
-    setTotalClients(currentClients.length);
-  }
-
-
-
-
+  const currentClients = useMemo( () => {
+    let processedClients = clientList;
+    if(filter){
+      processedClients = clientList.filter( c => c.name.toLowerCase().includes(filter.toLowerCase() ));
+    };
+    setTotalClients(processedClients.length);
+    return processedClients.slice(
+      (currentPage - 1) * CLIENTS_PER_PAGE,
+      (currentPage - 1) * CLIENTS_PER_PAGE + CLIENTS_PER_PAGE
+    );
+  }, [ clientList, currentPage, filter ]);
   return (
     <div>
       <Container className='align-items-center'>
         <h3 className='text-center m-4'>Clients</h3>
-        <SearchFilter  filter={setFilter}/>
+        <SearchFilter  filter={setFilter} currentPage={setCurrentPage}/>
         <ClientList 
           clients= {currentClients}
           isLoading={isLoading}
         />
         <Pagination
-          itemPerPage={clientsPerPage}
+          itemPerPage={CLIENTS_PER_PAGE}
           totalItems={totalClients}
           paginate={paginate}
+        />  
+        <FormModal
+          openButtonValue='Add Client'
+          title='Add Client'
+          formType='newClient'
         />
-        
-        {
-          openForm 
-           ? <ClientForm 
-              user={user} 
-              clientList= {clientList}
-              clientListHandler={setClientList} 
-              formHandler={setOpenForm}
-            />
-           : <Button onClick={() => { setOpenForm(true) }}>Add Client</Button>
-        }
       </Container>
     </div>
   );

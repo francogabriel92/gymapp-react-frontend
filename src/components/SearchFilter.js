@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Form, Col } from 'react-bootstrap';
 
-const SearchFilter = ({ filter }) => {
+const SearchFilter = ({ filter, currentPage }) => {
   const [ toSearch, setToSearch ] = useState('');
   const handleChange = e =>{
     setToSearch(e.target.value);
     filter(e.target.value);
+    currentPage(1);
   };
 
   
