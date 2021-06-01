@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
+import { Container, Button } from 'react-bootstrap';
 import ClientList from '../components/ClientList';
 import FormModal from '../components/FormModal';
 import Pagination from '../components/Pagination';
@@ -28,10 +28,11 @@ const Client = ({ user, userHandler }) => {
           setTotalClients(response.data.length);
         } else if (response.status === 401) {
           userHandler(null)
+          return(<Link to='/login' />)
         };
       }
       catch {
-        return(<Link to='/' />)
+        return(<Link to='/login' />)
       }
     };
     getClients();
@@ -62,12 +63,15 @@ const Client = ({ user, userHandler }) => {
           itemPerPage={CLIENTS_PER_PAGE}
           totalItems={totalClients}
           paginate={paginate}
-        />  
-        <FormModal
+        /> 
+        {/*<FormModal
           openButtonValue='Add Client'
           title='Add Client'
           formType='newClient'
-        />
+        />*/}
+        <Link to='/addclient'>
+          <Button>Add client</Button>
+        </Link>
       </Container>
     </div>
   );

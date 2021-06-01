@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import ClientAddForm from './ClientAddForm';
+
 
 const FormModal = ({ openButtonValue, title, formType }) => {
   const [show, setShow] = useState(false);
@@ -25,11 +25,7 @@ const FormModal = ({ openButtonValue, title, formType }) => {
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
-        {
-          {
-            'newClient': <ClientAddForm />,
-          }[formType]
-        }
+
       </Modal>
     </>
   );

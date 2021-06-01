@@ -10,6 +10,7 @@ import Home from './pages/Home';
 import Clients from './pages/Clients';
 import Login from './pages/Login';
 import Account from './pages/Account';
+import AddClient from './components/AddClientForm';
 
 const App = () => {
   const [ user, setUser ] = useState(null);
@@ -35,6 +36,9 @@ const App = () => {
           </Route>
           <Route path="/account">
             <Account loginHandler={setUser} />
+          </Route>
+          <Route path="/addclient">
+            <AddClient />
           </Route>
           <Route path="/">
             <Home />
