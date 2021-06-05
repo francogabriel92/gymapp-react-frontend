@@ -31,9 +31,21 @@ const create = async (client, token) => {
   }
 };
 
+const erase = async (client, token) => {
+  const config = setHeader(token);
+  try {
+    const response = await axios.delete(`${baseUrl}/${client.id}`, config)
+    return response
+  }
+  catch {
+    // PUT ERROR CODE
+  }
+}
+
 const clientService = { 
   get, 
-  create
+  create,
+  erase
 }
 
 export default clientService;

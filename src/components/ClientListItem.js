@@ -5,9 +5,22 @@ import { ListGroup,
   Col,
   Card,
   Button } from 'react-bootstrap';
+import clientService from '../services/client';
 
-const ClientListItem = ({ client }) => {
-
+const ClientListItem = ({ client, token, listHandler, list }) => {
+  const calculateAge = bd => Math.floor((Date.now()-bd)/(31557600000));
+  const deleteClient = async () => {
+      if(window.confirm(`Do you really want to delete ${client.name}?`)){
+        try {
+          await clientService.erase(client, token);
+          listHandler(list.filter( c => c.id !== client.id));
+          window.alert(`${client.name} deleted successfully.`);
+        }
+        catch (error) {
+          console.log(error);
+        }
+      }
+  };
   return(
     <ListGroup.Item>
       <Container>
@@ -18,7 +31,10 @@ const ClientListItem = ({ client }) => {
             </Row>
             <Row className='m-1'>
               <Col>
-                <Card.Text>Age: {client.age}</Card.Text>
+                <Card.Text>Age: {client.birthDate ? calculateAge(client.birthdate) : '-' }</Card.Text>
+              </Col>
+              <Col>
+                <Card.Text>Birth Date: {client.birthDate ? client.birthDate : '-'}</Card.Text>
               </Col>
               <Col>
                 <Card.Text>Mail: {client.mail ? client.mail : '-'}</Card.Text>
@@ -35,7 +51,16 @@ const ClientListItem = ({ client }) => {
                 <Card.Text>Address: {client.address ? client.address : '-'}</Card.Text>
               </Col>
               <Col>
-                <Button size='sm' variant='danger'>Remove</Button>
+                <Card.Text>Gender: {client.gender ? client.gender : '-'}</Card.Text>
+              </Col>
+              <Col>
+                <Button
+                  size='sm'
+                  variant='danger'
+                  onClick={deleteClient}
+                >
+                  Remove
+                </Button>
               </Col>
             </Row>
           </Col>

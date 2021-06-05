@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Button } from 'react-bootstrap';
 import ClientList from '../components/ClientList';
-import FormModal from '../components/FormModal';
 import Pagination from '../components/Pagination';
 import SearchFilter from '../components/SearchFilter';
 import clientService from '../services/client';
@@ -58,10 +57,14 @@ const Client = ({ user, userHandler }) => {
         <ClientList 
           clients= {currentClients}
           isLoading={isLoading}
+          token={user.token}
+          listHandler={setClientList}
+          list={clientList}
         />
         <Pagination
           itemPerPage={CLIENTS_PER_PAGE}
           totalItems={totalClients}
+          currentPage={currentPage}
           paginate={paginate}
         /> 
         {/*<FormModal

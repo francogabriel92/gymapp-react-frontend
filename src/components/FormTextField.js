@@ -1,5 +1,5 @@
 import React from 'react';
-import { useField, ErrorMessage } from 'formik';
+import { useField } from 'formik';
 import { Form } from 'react-bootstrap';
 
 const FormTexttField = ({ label, ...props }) => {
@@ -11,7 +11,7 @@ const FormTexttField = ({ label, ...props }) => {
         {...field}
         {...props}
       />
-      { meta.touched && meta.error && <ErrorMessage className='invalid-feedback' name={props.name} />}
+      { meta.touched && meta.error && <div className='mt-2 text-danger'>{meta.error}</div> }
     </Form.Group>
   )
 }

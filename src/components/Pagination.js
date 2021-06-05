@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-const Pagination = ({ itemPerPage = 10, totalItems = 0, paginate }) => {
+const Pagination = ({ itemPerPage = 10, totalItems = 0, currentPage, paginate }) => {
   const [ totalPages, setTotalPages ] = useState(0);
   
   useEffect(() => {
@@ -25,11 +25,11 @@ const Pagination = ({ itemPerPage = 10, totalItems = 0, paginate }) => {
   return (
     <nav>
       <ul className='pagination justify-content-center'>
-        <li className='page-item'>
+        <li className='page-item' onClick={() => currentPage !== 1 ? paginate(currentPage-1) : null}>
           <a className='page-link' href='#/'>Previous</a>
         </li>
           { paginationItems }
-        <li className='page-item'>
+        <li className='page-item' onClick={() => currentPage !== totalPages ? paginate(currentPage+1) : null}>
           <a className='page-link' href='#/'>Next</a>
         </li>
       </ul>

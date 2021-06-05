@@ -2,7 +2,7 @@ import React from 'react';
 import { Spinner, ListGroup } from 'react-bootstrap';
 import ClientListItem from './ClientListItem';
 
-const ClientList = ({ clients, isLoading }) => {
+const ClientList = ({ clients, isLoading, token, listHandler, list }) => {
 
   if(isLoading) {
     return(
@@ -18,9 +18,15 @@ const ClientList = ({ clients, isLoading }) => {
       <div>
         <ListGroup variant='flush'>
           {
-            clients
-              ? clients.map( client => <ClientListItem client={client} key={client.id} />)
-              : <span>No clients yet!</span>
+            clients.length > 0
+              ? clients.map( client => <ClientListItem 
+                  client={client}
+                  key={client.id}
+                  token={token}
+                  listHandler={listHandler}
+                  list={list}
+                />)
+              : <span className='m-3 alert alert-primary'>No clients yet!</span>
           }
         </ListGroup>
       </div>

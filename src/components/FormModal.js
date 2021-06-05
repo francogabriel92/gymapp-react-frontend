@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 
-const FormModal = ({ openButtonValue, title, formType }) => {
+const FormModal = ({ openButtonText, title, formType }) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -13,7 +13,7 @@ const FormModal = ({ openButtonValue, title, formType }) => {
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
-        {openButtonValue}
+        {openButtonText}
       </Button>
       <Modal
       size="lg"

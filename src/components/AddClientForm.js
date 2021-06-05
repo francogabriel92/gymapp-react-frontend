@@ -3,29 +3,36 @@ import { Formik } from 'formik';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import TextField from './FormTextField';
 import clientSchema from '../validations/ClientValidation';
+import clientService from '../services/client';
 
 const initialValues = {
   name: '',
   mail: '',
   address: '',
   city:'',
-  birthDate: null,
+  birthDate: '',
   phone: '',
   gender: '',
 };
 
-const AddClientForm = () => (
+const AddClientForm = ({ user }) => (
   <Formik
     initialValues={initialValues}
-    onSubmit={(values, actions) =>{
-      setTimeout(() => {
-        console.log(values);
-        console.log(actions);
-      }, 2000)
+    onSubmit={ async (values, actions) =>{
+      const newClient = { ...values };
+      try {
+        await clientService.create(newClient, user.token);
+        actions.resetForm()
+        actions.setSubmitting(false)
+      }
+      catch(error) {
+        console.log(error);
+        actions.setSubmitting(false);
+      };
     }}
     validationSchema={clientSchema}
   >
-    {({ handleChange, handleSubmit, isSubmitting, resetForm, values, errors, touched }) => (
+    {({ handleChange, handleSubmit, isSubmitting, resetForm, values, errors }) => (
       <Form className='m-4' onSubmit={handleSubmit}>
         <Row>
           <Col>
@@ -104,7 +111,13 @@ const AddClientForm = () => (
               />
             </Form.Group>
             <Form.Group>
-              <Button className ='mr-4' type='submit'>Create client</Button>
+              <Button 
+                className ='mr-4'
+                type='submit'
+                disabled={isSubmitting}
+              >
+                Create client
+              </Button>
               <Button onClick={resetForm} >Clear</Button>
             </Form.Group>
           </Col>
