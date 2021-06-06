@@ -1,17 +1,22 @@
 import React from 'react';
 import LoginForm from '../components/LoginForm';
-import { Link } from 'react-router-dom';
+import { Container, Image, Col, Row, Card } from 'react-bootstrap';
+import background from '../images/login-background.webp';
 
 const Login = ({ loginHandler }) => {
   return(
-    <div>
-      <h2>Login</h2>
-      <LoginForm loginHandler={loginHandler} />
-      <p>Not registered yet?</p>
-      <Link to='/register'>
-        <button>Sign Up</button>
-      </Link>
-    </div>
+    <Container fluid className='mt-4'>
+      <Row className='align-items-center'>
+        <Col xs={6}md={3} className='mx-auto'>
+          <Card>
+            <Card.Body>
+              <Card.Title className='text-center'>Login</Card.Title>
+              <LoginForm loginHandler={loginHandler} />
+            </Card.Body>
+          </Card>       
+        </Col>
+      </Row>    
+    </Container>
   );
 };
 

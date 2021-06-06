@@ -11,6 +11,7 @@ import Clients from './pages/Clients';
 import Login from './pages/Login';
 import Account from './pages/Account';
 import AddClient from './components/AddClientForm';
+import Footer from './components/Footer';
 
 const App = () => {
   const [ user, setUser ] = useState(null);
@@ -44,6 +45,7 @@ const App = () => {
             <Home />
           </Route>
         </Switch>
+        <Footer/>
       </div>
     </Router>
   );

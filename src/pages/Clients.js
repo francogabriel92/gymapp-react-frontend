@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Container, Button } from 'react-bootstrap';
 import ClientList from '../components/ClientList';
 import Pagination from '../components/Pagination';
@@ -12,6 +12,7 @@ const Client = ({ user, userHandler }) => {
   const [ clientList, setClientList ] = useState([]);
   const [ currentPage, setCurrentPage] = useState(1);
   const [ totalClients, setTotalClients ] = useState(0);
+  const [ redirect, setRedirect ] = useState(false);
   const CLIENTS_PER_PAGE = 4;
 
   const paginate = pageNum => setCurrentPage(pageNum);
@@ -25,13 +26,11 @@ const Client = ({ user, userHandler }) => {
           setIsLoading(false);
           setClientList(response.data)
           setTotalClients(response.data.length);
-        } else if (response.status === 401) {
-          userHandler(null)
-          return(<Link to='/login' />)
-        };
+        }
       }
-      catch {
-        return(<Link to='/login' />)
+      catch (error) {
+        userHandler(null);
+        setRedirect(true);
       }
     };
     getClients();
@@ -49,6 +48,11 @@ const Client = ({ user, userHandler }) => {
       (currentPage - 1) * CLIENTS_PER_PAGE + CLIENTS_PER_PAGE
     );
   }, [ clientList, currentPage, filter ]);
+
+  if (redirect) {
+    return <Redirect to='/login' />
+  };
+  
   return (
     <div>
       <Container className='align-items-center'>
@@ -57,7 +61,7 @@ const Client = ({ user, userHandler }) => {
         <ClientList 
           clients= {currentClients}
           isLoading={isLoading}
-          token={user.token}
+          token={ user ? user.token : null}
           listHandler={setClientList}
           list={clientList}
         />

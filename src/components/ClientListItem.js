@@ -6,6 +6,7 @@ import { ListGroup,
   Card,
   Button } from 'react-bootstrap';
 import clientService from '../services/client';
+import utils from '../utils/utils';
 
 const ClientListItem = ({ client, token, listHandler, list }) => {
   const calculateAge = bd => Math.floor((Date.now()-bd)/(31557600000));
@@ -21,6 +22,7 @@ const ClientListItem = ({ client, token, listHandler, list }) => {
         }
       }
   };
+  console.log(client);
   return(
     <ListGroup.Item>
       <Container>
@@ -51,7 +53,7 @@ const ClientListItem = ({ client, token, listHandler, list }) => {
                 <Card.Text>Address: {client.address ? client.address : '-'}</Card.Text>
               </Col>
               <Col>
-                <Card.Text>Gender: {client.gender ? client.gender : '-'}</Card.Text>
+                <Card.Text>Gender: {client.gender ? utils.capitalizeFirstLetter(client.gender) : '-'}</Card.Text>
               </Col>
               <Col>
                 <Button

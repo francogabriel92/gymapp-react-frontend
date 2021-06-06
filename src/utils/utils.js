@@ -2,8 +2,8 @@ const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-const strUtil = {
+const utils = {
   capitalizeFirstLetter
 }
 
-export default strUtil;
+export default utils;
