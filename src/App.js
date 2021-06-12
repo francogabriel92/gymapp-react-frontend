@@ -10,7 +10,7 @@ import Home from './pages/Home';
 import Clients from './pages/Clients';
 import Login from './pages/Login';
 import Account from './pages/Account';
-import AddClient from './components/AddClientForm';
+import AddClient from './pages/AddClient';
 import Footer from './components/Footer';
 
 const App = () => {

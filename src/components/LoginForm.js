@@ -11,7 +11,7 @@ const initialValues = {
   remember: false
 };
 
-const LoginForm = ({ loginHandler }) => (
+const LoginForm = ({ loginHandler, redirectHandler }) => (
   <Formik
     initialValues={initialValues}
     onSubmit={ async ( values, actions ) => {
@@ -21,7 +21,7 @@ const LoginForm = ({ loginHandler }) => (
         window.localStorage.setItem('loggedGymAppUser', JSON.stringify(user));
         actions.setSubmitting(false);
         actions.resetForm()
-        return <Redirect to='/home' />
+        redirectHandler(true);
       }
       catch (error) {
         
@@ -53,7 +53,6 @@ const LoginForm = ({ loginHandler }) => (
             </Form.Group>
             <Form.Group>
               <Button 
-                className ='mr-4'
                 type='submit'
                 disabled={isSubmitting}
               >
@@ -69,57 +68,14 @@ const LoginForm = ({ loginHandler }) => (
         </Row>
         <Row>
           <Col>
+          <Form.Group>
             <Button onClick={() => <Link to='/register'/>} >Sign Up</Button>
+          </Form.Group>
           </Col>
         </Row>
       </Form>
     )}
   </Formik>
-)
-/*{
-  const [ username, setUsername ] = useState('');
-  const [ password, setPassword ] = useState('');
-
-  const handleSubmit = async e => {
-    e.preventDefault();
-    try {
-      const user = await loginService({ username, password});
-      setUsername('');
-      setPassword('');
-      loginHandler(user);
-      window.localStorage.setItem('loggedGymAppUser', JSON.stringify(user));
-    }
-    catch (error) {
-
-    }
-  }
-
-  return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Username</label>
-          <input
-            type='text'
-            value={username}
-            onChange={ e => setUsername(e.target.value)}
-          >
-          </input>
-        </div>
-        <div>
-          <label>Password</label>
-          <input
-            type='password'
-            value={password}
-            onChange={ e => setPassword(e.target.value)}
-          >
-          </input>
-        </div>
-        <input type='submit' value='Login' />
-      </form>
-    </div>
-  ); 
-
-};*/
+);
 
 export default LoginForm;

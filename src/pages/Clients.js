@@ -5,6 +5,7 @@ import ClientList from '../components/ClientList';
 import Pagination from '../components/Pagination';
 import SearchFilter from '../components/SearchFilter';
 import clientService from '../services/client';
+import ClientCard from '../components/ClientCard';
 
 const Client = ({ user, userHandler }) => {
   const [ isLoading, setIsLoading ] = useState(true);
@@ -13,10 +14,12 @@ const Client = ({ user, userHandler }) => {
   const [ currentPage, setCurrentPage] = useState(1);
   const [ totalClients, setTotalClients ] = useState(0);
   const [ redirect, setRedirect ] = useState(false);
+  const [ currentClient, setCurrentClient ] = useState(undefined);
   const CLIENTS_PER_PAGE = 4;
 
-  const paginate = pageNum => setCurrentPage(pageNum);
+  const paginate = pageNum => setCurrentPage(pageNum);  // CHANGES CURRENT PAGE ON PAGINATION
 
+  // GET CLIENTS FROM DB
   useEffect(()=> {
     const getClients = async () => {
       try{
@@ -37,6 +40,7 @@ const Client = ({ user, userHandler }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // FILTER & PAGINATION CLIENT'S ARRAY TREATMENT
   const currentClients = useMemo( () => {
     let processedClients = clientList;
     if(filter){
@@ -50,7 +54,7 @@ const Client = ({ user, userHandler }) => {
   }, [ clientList, currentPage, filter ]);
 
   if (redirect) {
-    return <Redirect to='/login' />
+    return <Redirect to='/login' /> 
   };
   
   return (
@@ -64,6 +68,7 @@ const Client = ({ user, userHandler }) => {
           token={ user ? user.token : null}
           listHandler={setClientList}
           list={clientList}
+          currentClientHandler={setCurrentClient}
         />
         <Pagination
           itemPerPage={CLIENTS_PER_PAGE}
@@ -71,14 +76,20 @@ const Client = ({ user, userHandler }) => {
           currentPage={currentPage}
           paginate={paginate}
         /> 
-        {/*<FormModal
-          openButtonValue='Add Client'
-          title='Add Client'
-          formType='newClient'
-        />*/}
         <Link to='/addclient'>
           <Button>Add client</Button>
         </Link>
+        {
+          currentClient
+            ? <ClientCard
+                client={currentClient}
+                token={ user ? user.token : null}
+                listHandler={setClientList}
+                list={clientList}
+                currentClientHandler={setCurrentClient}
+              />
+            : null
+        }
       </Container>
     </div>
   );

@@ -9,7 +9,6 @@ import clientService from '../services/client';
 import utils from '../utils/utils';
 
 const ClientListItem = ({ client, token, listHandler, list }) => {
-  const calculateAge = bd => Math.floor((Date.now()-bd)/(31557600000));
   const deleteClient = async () => {
       if(window.confirm(`Do you really want to delete ${client.name}?`)){
         try {
@@ -22,7 +21,9 @@ const ClientListItem = ({ client, token, listHandler, list }) => {
         }
       }
   };
-  console.log(client);
+  client.birthDate = new Date(client.birthDate);
+  client.age = utils.calculateAge(client.birthDate);
+  client.subEndDate = new Date(client.subEndDate);
   return(
     <ListGroup.Item>
       <Container>
@@ -33,10 +34,10 @@ const ClientListItem = ({ client, token, listHandler, list }) => {
             </Row>
             <Row className='m-1'>
               <Col>
-                <Card.Text>Age: {client.birthDate ? calculateAge(client.birthdate) : '-' }</Card.Text>
+                <Card.Text>Age: {client.birthDate ? client.age : '-' }</Card.Text>
               </Col>
               <Col>
-                <Card.Text>Birth Date: {client.birthDate ? client.birthDate : '-'}</Card.Text>
+                <Card.Text>Birth Date: {client.birthDate ? client.birthDate.toLocaleDateString() : '-'}</Card.Text>
               </Col>
               <Col>
                 <Card.Text>Mail: {client.mail ? client.mail : '-'}</Card.Text>
@@ -63,6 +64,11 @@ const ClientListItem = ({ client, token, listHandler, list }) => {
                 >
                   Remove
                 </Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Card.Text>Subscriptions end in: {client.subEndDate ? client.subEndDate.toLocaleDateString() : '-'}</Card.Text>
               </Col>
             </Row>
           </Col>

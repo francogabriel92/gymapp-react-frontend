@@ -13,17 +13,20 @@ const initialValues = {
   birthDate: '',
   phone: '',
   gender: '',
+  subQty:'',
+  subType:''
 };
 
-const AddClientForm = ({ user }) => (
+const AddClientForm = ({ user, modalHandler }) => (
   <Formik
     initialValues={initialValues}
     onSubmit={ async (values, actions) =>{
       const newClient = { ...values };
       try {
         await clientService.create(newClient, user.token);
-        actions.resetForm()
-        actions.setSubmitting(false)
+        modalHandler(true);
+        actions.resetForm();
+        actions.setSubmitting(false); 
       }
       catch(error) {
         console.log(error);
@@ -32,10 +35,10 @@ const AddClientForm = ({ user }) => (
     }}
     validationSchema={clientSchema}
   >
-    {({ handleChange, handleSubmit, isSubmitting, resetForm, values, errors }) => (
+    {({ handleChange, handleSubmit, isValid, isSubmitting, resetForm, values, errors }) => (
       <Form className='m-4' onSubmit={handleSubmit}>
         <Row>
-          <Col>
+          <Col sm={6}>
             <TextField
              label='Fullname'
              name='name'
@@ -85,6 +88,7 @@ const AddClientForm = ({ user }) => (
             />
             <Form.Group>
               <Form.Label>Gender</Form.Label>
+              { values.gender.touched && values.gender.error && <div className='mt-2 text-danger'>{values.gender.error}</div> }
               <Form.Check 
                 type='radio'
                 id='gender-male'
@@ -111,16 +115,45 @@ const AddClientForm = ({ user }) => (
               />
             </Form.Group>
             <Form.Group>
-              <Button 
-                className ='mr-4'
-                type='submit'
-                disabled={isSubmitting}
-              >
-                Create client
-              </Button>
-              <Button onClick={resetForm} >Clear</Button>
+              <TextField
+                label='Subscription time'
+                className={{ width: '40%' }}
+                type='number'
+                name='subQty'
+                onChange={handleChange}
+                value={values.subQty}
+                error={errors.subQty}
+              />
+              <Form.Check
+                type='radio'
+                label='Months'
+                id='sub-months'
+                name='subType'
+                value='months'
+                onChange={handleChange}
+              />
+              <Form.Check
+                type='radio'
+                label='Days'
+                id='sub-days'
+                name='subType'
+                value='days'
+                onChange={handleChange}
+              />
             </Form.Group>
           </Col>
+        </Row>
+        <Row className='mt-3 justify-content-center'>
+          <Form.Group>
+            <Button 
+              className ='mr-4'
+              type='submit'
+              disabled={ !isValid || isSubmitting}
+            >
+              Create client
+            </Button>
+            <Button variant='secondary' onClick={resetForm} >Clear</Button>
+          </Form.Group>
         </Row>
       </Form>
     )}

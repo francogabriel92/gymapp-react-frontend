@@ -1,8 +1,8 @@
 import React from 'react';
-import { Spinner, ListGroup } from 'react-bootstrap';
-import ClientListItem from './ClientListItem';
+import { Spinner, Table } from 'react-bootstrap';
+import ClientTableItem from './ClientTableItem';
 
-const ClientList = ({ clients, isLoading, token, listHandler, list }) => {
+const ClientList = ({ clients, isLoading, token, listHandler, list, currentClientHandler }) => {
 
   if(isLoading) {
     return(
@@ -15,20 +15,34 @@ const ClientList = ({ clients, isLoading, token, listHandler, list }) => {
     )
   } else {
     return (
-      <div>
-        <ListGroup variant='flush'>
-          {
-            clients.length > 0
-              ? clients.map( client => <ClientListItem 
-                  client={client}
-                  key={client.id}
-                  token={token}
-                  listHandler={listHandler}
-                  list={list}
-                />)
-              : <span className='m-3 alert alert-primary'>No clients yet!</span>
-          }
-        </ListGroup>
+      <div className='mt-4'>
+        <Table size='sm' striped bordered hover responsive>
+          <thead>
+            <tr className='text-center'>
+              <th>Fullname</th>
+              <th>Age</th>
+              <th>Birthdate</th>
+              <th>Phone</th>
+              <th>Sub's end date</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              clients.length > 0
+                ? clients.map( client => <ClientTableItem 
+                    client={client}
+                    key={client.id}
+                    token={token}
+                    listHandler={listHandler}
+                    list={list}
+                    currentClientHandler={currentClientHandler}
+                  />)
+                : <tr><td colSpan='7' className='m-3 alert alert-primary text-center'>No Clients found!</td></tr>
+            }
+          </tbody>
+        </Table>
       </div>
     );
   }
