@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import clientService from '../services/client';
 import utils from '../utils/utils';
+import AddTimeButton from './AddTimeButton';
 
 const ClientTableItem = ({ client, token, listHandler, list, currentClientHandler }) => {
   const deleteClient = async () => {
@@ -31,7 +32,17 @@ const ClientTableItem = ({ client, token, listHandler, list, currentClientHandle
           {client.subEndDate ? client.subEndDate.toLocaleDateString() : '-'}
         </td>
         <td>
-          <Button size='sm'>Add</Button>
+          <AddTimeButton
+            table
+            size='sm'
+            token={token}
+            client={client}
+            currentClientHandler={currentClientHandler}
+            listHandler={listHandler}
+            list={list}
+          >
+            Add
+          </AddTimeButton>
         </td>
         <td> 
           <Button

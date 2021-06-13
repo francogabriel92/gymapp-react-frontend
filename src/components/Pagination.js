@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import '../styles/pagination.css';
 
 const Pagination = ({ itemPerPage = 10, totalItems = 0, currentPage, paginate }) => {
   const [ totalPages, setTotalPages ] = useState(0);
@@ -13,7 +14,7 @@ const Pagination = ({ itemPerPage = 10, totalItems = 0, currentPage, paginate })
     const pageNumbers = [];
     for( let i = 1; i <= totalPages; i++ ){
       pageNumbers.push(
-        <li className='page-item' key={i}>
+        <li className='page-item text-dark' key={i}>
           <a className='page-link' href='#/' onClick={() => paginate(i)}>{i}</a>
         </li>);
     }

@@ -145,7 +145,8 @@ const AddClientForm = ({ user, modalHandler }) => (
         </Row>
         <Row className='mt-3 justify-content-center'>
           <Form.Group>
-            <Button 
+            <Button
+              variant='dark'
               className ='mr-4'
               type='submit'
               disabled={ !isValid || isSubmitting}

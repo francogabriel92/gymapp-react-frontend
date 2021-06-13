@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
+import clientService from '../services/client';
 
-const AddTimeButton = ({ table, client, currentClientHandler, list, listHandler, token }) => {
+const AddTimeButton = ({ table, client, currentClientHandler, list, listHandler, token, ...props }) => {
   const [open, setOpen] = useState(false);
+  const [ error, setError ] = useState(null)
   const [ values, setValues ] = useState({
     subQty: '',
     subType:''
@@ -12,22 +14,45 @@ const AddTimeButton = ({ table, client, currentClientHandler, list, listHandler,
     ...values,
     [e.target.name]: e.target.value
   });
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    const result = validate();
-    console.log(values, result);
-    setValues({});
+    if(validate()){
+      try {
+        const response = await clientService.addTime(client, values, token);
+        listHandler( list.map( c => c.id === response.data.id ? response.data : c ) );
+        currentClientHandler(response.data);
+        handleOpen();
+        setValues('')
+      }
+      catch (error) {
+        console.log(error.message);
+      }
+    };
   };
   const validate = () => {
-    if ( values.subQty <= 0 || !values.subQty) return false;
-    if ( values.subType === '' ) return false;
+    if ( values.subQty <= 0 || values.subQty.length === 0) {
+      handleError('* Number must be more than 0');
+      return false;
+    };
+    if ( values.subType === '' ) {
+      handleError('* Must select a type');
+      return false;
+    };
     return true;
   };
+  const handleError = message => {
+    setError(message);
+    setTimeout(() => {
+      setError(null);
+    }, 5000)
+  }
   return (
     <> 
       <Button
+        variant='dark'
         className={ table ? '' : 'm-1' }
         onClick={handleOpen}
+        {...props}
       >
         { table ? 'Add' : 'Add Time' }
       </Button>
@@ -46,6 +71,7 @@ const AddTimeButton = ({ table, client, currentClientHandler, list, listHandler,
           <Modal.Body>
             <Form.Group>
               <Form.Control
+                className='mb-1'
                 type='number'
                 onChange={handleChange}
                 name='subQty'
@@ -67,6 +93,11 @@ const AddTimeButton = ({ table, client, currentClientHandler, list, listHandler,
                 value='days'
                 onChange={handleChange}
               />
+              {
+                error
+                  ? <p className='text-danger'>{error}</p>
+                  : null
+              }
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>

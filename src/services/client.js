@@ -42,6 +42,16 @@ const update = async (updatedClient, token) => {
   }
 }
 
+const addTime = async (client, time, token) => {
+  const config = setHeader(token);
+  try {
+    const response = await axios.put(`${baseUrl}/addtime/${client.id}`, time, config);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 const erase = async (client, token) => {
   const config = setHeader(token);
   try {
@@ -57,6 +67,7 @@ const clientService = {
   get, 
   create,
   update,
+  addTime,
   erase
 }
 

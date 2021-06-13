@@ -10,9 +10,8 @@ import CardDataField from './CardDataField';
 import ModalUpdateForm from './ClientUpdateModalForm';
 import AddTimeButton from './AddTimeButton';
 
-const ClientCard = ({ client, token, listHandler, list, currentClientHandler }) => {
+const ClientCard = ({ client, token, listHandler, list, currentClientHandler, dashboard }) => {
   const [ openName, setOpenName ] = useState(false);
-  const [ openSub, setOpenSub ] = useState(false);
   const [ label, setLabel ] = useState('');
   const [ value, setValue ] = useState('');
   const deleteClient = async () => {
@@ -128,6 +127,7 @@ const ClientCard = ({ client, token, listHandler, list, currentClientHandler }) 
                 list={list}
               />
               <Button
+              variant='dark'
                 onClick={() => {
                   setLabel('Name');
                   setValue(client.name);
@@ -143,12 +143,16 @@ const ClientCard = ({ client, token, listHandler, list, currentClientHandler }) 
               >
                 Remove
               </Button>
-              <Button
-                variant='secondary'
-                onClick={() => currentClientHandler(null)}
-              >
-                Close
-              </Button>
+              {
+                !dashboard
+                  ? <Button
+                  variant='secondary'
+                  onClick={() => currentClientHandler(null)}
+                  >
+                  Close
+                  </Button>
+                  : null
+              }
             </Col>
           </Row>
         </Container>

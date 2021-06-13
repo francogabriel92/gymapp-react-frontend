@@ -15,12 +15,30 @@ const dateIsPast = date => {
     return true;
   }
   return false;
+};
+
+const getStats = list => {
+  const currentDate = new Date();
+  const unsubClients = list.filter( c => dateIsPast(new Date(c.subEndDate)) ).length;
+  const subClients = list.filter( c => !dateIsPast(new Date(c.subEndDate)) ).length;
+  const closeToExpire = list.filter( c => {
+    const result = (Math.floor(new Date(c.subEndDate).getTime() - currentDate.getTime()) / 2629800000 );
+    return (result < 1 && result > 0);
+  });
+
+  const result = {
+    unsubClients,
+    subClients,
+    closeToExpire
+  }
+  return result;
 }
 
 const utils = {
   capitalizeFirstLetter,
   calculateAge,
-  dateIsPast
+  dateIsPast,
+  getStats
 }
 
 export default utils;

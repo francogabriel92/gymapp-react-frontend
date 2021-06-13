@@ -1,7 +1,7 @@
 import { Field, Formik } from 'formik';
 import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import TextField from '../components/FormTextField';
 import loginService from '../services/login';
 
@@ -55,6 +55,7 @@ const LoginForm = ({ loginHandler, redirectHandler }) => (
               <Button 
                 type='submit'
                 disabled={isSubmitting}
+                variant='light'
               >
                 Login
               </Button>   
@@ -69,7 +70,7 @@ const LoginForm = ({ loginHandler, redirectHandler }) => (
         <Row>
           <Col>
           <Form.Group>
-            <Button onClick={() => <Link to='/register'/>} >Sign Up</Button>
+            <Button variant='success' onClick={() => <Link to='/register'/>} >Sign Up</Button>
           </Form.Group>
           </Col>
         </Row>

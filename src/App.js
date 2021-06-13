@@ -3,18 +3,24 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-} from 'react-router-dom';
+  Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import clientService from './services/client';
 import Navigation from './components/Navigation';
-import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
 import Clients from './pages/Clients';
 import Login from './pages/Login';
 import Account from './pages/Account';
 import AddClient from './pages/AddClient';
 import Footer from './components/Footer';
+import PublicHomePage from './pages/PublicHomePage';
+import Loading from './components/Loading';
 
 const App = () => {
   const [ user, setUser ] = useState(null);
+  const [ clientList, setClientList ] = useState([]);
+  const [ isLoading, setIsLoading ] = useState(false);
+
   // GET USER FROM LOCAL STORAGE
   useEffect( () => {
     const loggedUserJSON = window.localStorage.getItem('loggedGymAppUser');
@@ -23,6 +29,27 @@ const App = () => {
       setUser(user);
     };
   }, [] );
+  // GET CLIENTS FROM DB
+  useEffect(()=> {
+    const getClients = async () => {
+      try{
+        setIsLoading(true);
+        const response = await clientService.get(user.token);
+        if (response.status === 200) {
+          setIsLoading(false);
+          setClientList(response.data);
+        }
+      }
+      catch (error) {
+        if(error.name === 'TypeError') {
+          setUser(null);
+          return <Link to='/login' />
+        };
+      };
+    };
+    getClients();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return(
     <Router>
@@ -33,7 +60,12 @@ const App = () => {
             <Login loginHandler={setUser} />
           </Route>
           <Route path="/clients">
-            <Clients user={user} userHandler={setUser} />
+            <Clients
+              user={user}
+              userHandler={setUser}
+              clientList={clientList}
+              setClientList={setClientList}
+            />
           </Route>
           <Route path="/account">
             <Account loginHandler={setUser} />
@@ -42,7 +74,16 @@ const App = () => {
             <AddClient user={user} />
           </Route>
           <Route path="/">
-            <Home />
+            { user
+              ? (isLoading
+                ? <Loading /> 
+                : <Dashboard
+                    clientList={clientList}
+                    setClientList={setClientList}
+                    user={user}
+                  />) 
+              : <PublicHomePage /> 
+            }
           </Route>
         </Switch>
         <Footer/>

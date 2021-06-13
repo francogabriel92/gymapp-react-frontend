@@ -11,8 +11,8 @@ const Login = ({ loginHandler }) => {
   return(
     <Container fluid className='mt-4'>
       <Row className='align-items-center'>
-        <Col xs={6}md={3} className='mx-auto'>
-          <Card border='primary'>
+        <Col xs={10} sm={6} md ={5} lg={4} className='mx-auto'>
+          <Card border='dark' bg='dark' text='light'>
             <Card.Body>
               <Card.Title className='text-center'>Login</Card.Title>
               <LoginForm loginHandler={loginHandler} redirectHandler={setRedirect} />
