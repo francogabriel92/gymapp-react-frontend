@@ -71,7 +71,11 @@ const App = () => {
             <Account loginHandler={setUser} />
           </Route>
           <Route path="/addclient">
-            <AddClient user={user} />
+            <AddClient
+              user={user}
+              clientList={clientList}
+              clientListHandler={setClientList}
+            />
           </Route>
           <Route path="/">
             { user

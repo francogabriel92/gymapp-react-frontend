@@ -17,16 +17,18 @@ const initialValues = {
   subType:''
 };
 
-const AddClientForm = ({ user, modalHandler }) => (
+const AddClientForm = ({ user, modalHandler, clientList, clientListHandler }) => (
   <Formik
     initialValues={initialValues}
     onSubmit={ async (values, actions) =>{
       const newClient = { ...values };
       try {
-        await clientService.create(newClient, user.token);
+        const response = await clientService.create(newClient, user.token);
+        console.log(response.data);
+        clientListHandler(clientList.concat(response.data));
         modalHandler(true);
         actions.resetForm();
-        actions.setSubmitting(false); 
+        actions.setSubmitting(false);
       }
       catch(error) {
         console.log(error);
