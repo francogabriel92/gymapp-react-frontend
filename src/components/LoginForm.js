@@ -70,7 +70,9 @@ const LoginForm = ({ loginHandler, redirectHandler }) => (
         <Row>
           <Col>
           <Form.Group>
-            <Button variant='success' onClick={() => <Link to='/register'/>} >Sign Up</Button>
+            <Link to='/signup'>
+              <Button variant='success' >Sign Up</Button>
+            </Link>
           </Form.Group>
           </Col>
         </Row>

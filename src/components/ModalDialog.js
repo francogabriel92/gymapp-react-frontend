@@ -8,7 +8,7 @@ const ModalDialog = ({ open, handleOpen, title, message, children }) => {
   return (
     <>
       <Modal
-      size='sm'
+      size='m'
       aria-labelledby='contained-modal-title-vcenter'
       centered
       animation={false}
@@ -23,7 +23,7 @@ const ModalDialog = ({ open, handleOpen, title, message, children }) => {
           {children}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant='primary' onClick={handleClose}>Ok</Button>
+          <Button variant='dark' onClick={handleClose}>Ok</Button>
         </Modal.Footer>
       </Modal>
     </>

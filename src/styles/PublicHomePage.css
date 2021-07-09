@@ -1,0 +1,11 @@
+.homepage-img {
+  object-fit: cover !important ;
+  width: 100% !important;
+  height: 80vh;
+}
+
+.caption {
+  transform: translateY(-100%);
+  backdrop-filter: blur(15px) saturate(.3);
+  border-radius: 25px;
+}

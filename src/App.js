@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link } from 'react-router-dom';
+  Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import clientService from './services/client';
 import Navigation from './components/Navigation';
@@ -15,6 +14,7 @@ import AddClient from './pages/AddClient';
 import Footer from './components/Footer';
 import PublicHomePage from './pages/PublicHomePage';
 import Loading from './components/Loading';
+import SignUp from './pages/SignUp';
 
 const App = () => {
   const [ user, setUser ] = useState(null);
@@ -38,13 +38,12 @@ const App = () => {
         if (response.status === 200) {
           setIsLoading(false);
           setClientList(response.data);
-        }
+        } 
       }
       catch (error) {
-        if(error.name === 'TypeError') {
-          setUser(null);
-          return <Link to='/login' />
-        };
+        setIsLoading(false);
+        window.localStorage.removeItem('loggedGymAppUser');
+        setUser(null);
       };
     };
     getClients();
@@ -76,6 +75,9 @@ const App = () => {
               clientList={clientList}
               clientListHandler={setClientList}
             />
+          </Route>
+          <Route path='/signup'>
+            <SignUp />
           </Route>
           <Route path="/">
             { user

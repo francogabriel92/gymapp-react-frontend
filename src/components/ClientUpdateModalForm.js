@@ -85,7 +85,7 @@ const ClientUpdateModalForm = ({ open, handleOpen, title, label, value, client, 
                 : null
             }
             <Modal.Footer>
-              <Button variant='primary' type='submit'>Save changes</Button>
+              <Button variant='dark' type='submit'>Save changes</Button>
               <Button variant='secondary' onClick={handleClose}>Close</Button>
             </Modal.Footer>
           </Form>

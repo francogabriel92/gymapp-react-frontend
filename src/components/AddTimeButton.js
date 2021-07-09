@@ -101,7 +101,7 @@ const AddTimeButton = ({ table, client, currentClientHandler, list, listHandler,
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
-            <Button type='submit'>Add</Button>
+            <Button variant='dark' type='submit'>Add</Button>
             <Button
               variant='secondary'
               onClick={handleOpen}

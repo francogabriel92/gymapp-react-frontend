@@ -39,6 +39,7 @@ const update = async (updatedClient, token) => {
   }
   catch (error) {
     console.log(error.message);
+    return error.message;
   }
 }
 

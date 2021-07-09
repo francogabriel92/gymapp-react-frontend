@@ -36,16 +36,19 @@ const Dashboard = ({ clientList, setClientList, user }) => {
           <Col>
             <Widget title='Close to Expire'>
               { clientList.length > 0 && stats.closeToExpire
-                ? stats.closeToExpire.map( c => <Card.Text 
-                  key={c.id}
-                  onClick={() => {
+                ? stats.closeToExpire.map( c => {
+                  c.subEndDate = new Date(c.subEndDate);
+                  return <Card.Text 
+                    key={c.id}
+                    onClick={() => {
                     handleOpen()
                     setSelectedClient(c)
-                  }}
-                  style={{ cursor: 'pointer' }}
+                    }}
+                    style={{ cursor: 'pointer' }}
                   >
-                    {c.name}
-                  </Card.Text>)
+                    {c.name} - {c.subEndDate.toLocaleDateString()}
+                  </Card.Text>
+                })
                 : null
               }
             </Widget>

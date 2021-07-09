@@ -1,3 +1,11 @@
 .card-modal-background {
   background-color: #343a40 ;
 }
+
+.modal-body {
+  border-radius: 5%;
+}
+
+.modal-content {
+  border-radius: 5% !important;
+}

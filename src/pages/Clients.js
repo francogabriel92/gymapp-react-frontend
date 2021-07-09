@@ -52,7 +52,7 @@ const Client = ({ user, userHandler, clientList, setClientList }) => {
           paginate={paginate}
         /> 
         <Link to='/addclient'>
-          <Button variant='dark'>Add client</Button>
+          <Button className='text-center' variant='dark'>Add client</Button>
         </Link>
         {
           currentClient

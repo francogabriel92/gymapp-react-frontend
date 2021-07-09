@@ -24,7 +24,6 @@ const AddClientForm = ({ user, modalHandler, clientList, clientListHandler }) =>
       const newClient = { ...values };
       try {
         const response = await clientService.create(newClient, user.token);
-        console.log(response.data);
         clientListHandler(clientList.concat(response.data));
         modalHandler(true);
         actions.resetForm();
